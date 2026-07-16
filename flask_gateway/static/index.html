@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>民宿管理系统</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- 登录/注册页 -->
+  <div id="auth-page" class="auth-page">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1>民宿管理系统</h1>
+        <p class="auth-subtitle">Homestay Manager</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">登录</button>
+        <button class="auth-tab" data-tab="register">注册</button>
+      </div>
+      <form id="login-form" class="auth-form">
+        <div class="form-group">
+          <label>用户名</label>
+          <input type="text" name="username" required minlength="3" placeholder="请输入用户名" />
+        </div>
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password" name="password" required minlength="6" placeholder="请输入密码" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">登 录</button>
+      </form>
+      <form id="register-form" class="auth-form hidden">
+        <div class="form-group">
+          <label>用户名</label>
+          <input type="text" name="username" required minlength="3" placeholder="至少 3 个字符" />
+        </div>
+        <div class="form-group">
+          <label>昵称</label>
+          <input type="text" name="full_name" placeholder="可选" />
+        </div>
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password" name="password" required minlength="6" placeholder="至少 6 个字符" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">注 册</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 主应用页 -->
+  <div id="app" class="app hidden">
+    <!-- 顶部导航 -->
+    <header class="navbar">
+      <div class="navbar-brand">民宿管理系统</div>
+      <nav class="navbar-nav">
+        <a href="#/dashboard" data-route="dashboard" class="nav-item">数据看板</a>
+        <a href="#/rooms" data-route="rooms" class="nav-item">房源管理</a>
+        <a href="#/bookings" data-route="bookings" class="nav-item">预订管理</a>
+      </nav>
+      <div class="navbar-user">
+        <span id="user-name"></span>
+        <button id="logout-btn" class="btn btn-text">退出</button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- 数据看板页 -->
+      <section id="view-dashboard" class="view hidden">
+        <div class="stats-grid">
+          <div class="stat-card stat-blue">
+            <div class="stat-label">总收益</div>
+            <div class="stat-value" id="stat-revenue">¥0</div>
+          </div>
+          <div class="stat-card stat-green">
+            <div class="stat-label">本月收益</div>
+            <div class="stat-value" id="stat-monthly">¥0</div>
+          </div>
+          <div class="stat-card stat-orange">
+            <div class="stat-label">入住率(近30天)</div>
+            <div class="stat-value" id="stat-occupancy">0%</div>
+          </div>
+          <div class="stat-card stat-purple">
+            <div class="stat-label">总预订数</div>
+            <div class="stat-value" id="stat-bookings">0</div>
+          </div>
+        </div>
+        <div class="dashboard-charts">
+          <div class="chart-card">
+            <h3 class="chart-title">近 7 日收益趋势</h3>
+            <canvas id="revenue-chart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">房型预订占比</h3>
+            <canvas id="roomtype-chart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- 房源管理页 -->
+      <section id="view-rooms" class="view hidden">
+        <div class="page-header">
+          <h2>房源管理</h2>
+          <button class="btn btn-primary" id="btn-add-room">+ 新增房源</button>
+        </div>
+        <div class="search-bar">
+          <input type="text" id="room-search" placeholder="搜索房源名称…" class="search-input" />
+          <button class="btn btn-outline" id="btn-room-search">搜索</button>
+        </div>
+        <div id="room-list" class="card-grid"></div>
+      </section>
+
+      <!-- 预订管理页 -->
+      <section id="view-bookings" class="view hidden">
+        <div class="page-header">
+          <h2>预订管理</h2>
+          <button class="btn btn-primary" id="btn-add-booking">+ 新增预订</button>
+        </div>
+        <div class="filter-bar">
+          <select id="booking-status-filter" class="filter-select">
+            <option value="">全部状态</option>
+            <option value="pending">待确认</option>
+            <option value="confirmed">已确认</option>
+            <option value="checked_in">已入住</option>
+            <option value="checked_out">已退房</option>
+            <option value="cancelled">已取消</option>
+          </select>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>房源</th><th>客人</th><th>入住</th><th>退房</th>
+                <th>晚数</th><th>金额</th><th>状态</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="booking-list"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 通用 Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-mask"></div>
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-title">标题</h3>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast 提示 -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/rooms.js"></script>
+  <script src="/js/bookings.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
