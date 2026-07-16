@@ -4,47 +4,92 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>民宿管理系统</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <!-- 登录/注册页 -->
   <div id="auth-page" class="auth-page">
-    <div class="auth-card">
-      <div class="auth-header">
+    <!-- 左侧品牌插画区 -->
+    <div class="auth-hero">
+      <div class="auth-hero-content">
+        <!-- SVG 山景插画 -->
+        <svg class="hero-illustration" viewBox="0 0 400 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 远山 -->
+          <path d="M0 200 L60 140 L120 175 L180 110 L240 155 L300 120 L360 160 L400 135 L400 280 L0 280 Z"
+                fill="rgba(255,255,255,0.12)" />
+          <!-- 中山 -->
+          <path d="M0 230 L80 180 L150 210 L220 160 L280 195 L350 170 L400 190 L400 280 L0 280 Z"
+                fill="rgba(255,255,255,0.18)" />
+          <!-- 近山 -->
+          <path d="M0 260 L100 225 L180 250 L260 215 L340 240 L400 225 L400 280 L0 280 Z"
+                fill="rgba(255,255,255,0.28)" />
+          <!-- 月亮 -->
+          <circle cx="320" cy="60" r="28" fill="rgba(255,255,255,0.85)" />
+          <circle cx="332" cy="52" r="24" fill="#2D4A38" />
+          <!-- 小屋 -->
+          <g transform="translate(150, 195)">
+            <rect x="10" y="20" width="50" height="35" rx="2" fill="rgba(255,255,255,0.9)" />
+            <polygon points="35,5 0,20 70,20" fill="rgba(255,255,255,0.85)" />
+            <rect x="28" y="32" width="14" height="23" rx="1" fill="#C67A4B" opacity="0.8" />
+            <rect x="15" y="28" width="10" height="10" rx="1" fill="rgba(255,255,255,0.6)" />
+            <rect x="45" y="28" width="10" height="10" rx="1" fill="rgba(255,255,255,0.6)" />
+          </g>
+          <!-- 星星 -->
+          <circle cx="80" cy="40" r="2" fill="rgba(255,255,255,0.7)" />
+          <circle cx="150" cy="25" r="1.5" fill="rgba(255,255,255,0.6)" />
+          <circle cx="200" cy="50" r="2" fill="rgba(255,255,255,0.5)" />
+          <circle cx="250" cy="30" r="1.5" fill="rgba(255,255,255,0.7)" />
+          <circle cx="50" cy="70" r="1" fill="rgba(255,255,255,0.5)" />
+          <circle cx="370" cy="80" r="1.5" fill="rgba(255,255,255,0.6)" />
+        </svg>
         <h1>民宿管理系统</h1>
-        <p class="auth-subtitle">Homestay Manager</p>
+        <p class="hero-subtitle">HOMESTAY MANAGER</p>
+        <p class="hero-tagline">让每一间客房都被妥善照料<br />让每一次入住都宾至如归</p>
       </div>
-      <div class="auth-tabs">
-        <button class="auth-tab active" data-tab="login">登录</button>
-        <button class="auth-tab" data-tab="register">注册</button>
+    </div>
+
+    <!-- 右侧登录卡片 -->
+    <div class="auth-side">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h2>欢迎回来</h2>
+          <p class="auth-subtitle">登录以管理您的民宿</p>
+        </div>
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login">登录</button>
+          <button class="auth-tab" data-tab="register">注册</button>
+        </div>
+        <form id="login-form" class="auth-form">
+          <div class="form-group">
+            <label>用户名</label>
+            <input type="text" name="username" required minlength="3" placeholder="请输入用户名" />
+          </div>
+          <div class="form-group">
+            <label>密码</label>
+            <input type="password" name="password" required minlength="6" placeholder="请输入密码" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">登 录</button>
+        </form>
+        <form id="register-form" class="auth-form hidden">
+          <div class="form-group">
+            <label>用户名</label>
+            <input type="text" name="username" required minlength="3" placeholder="至少 3 个字符" />
+          </div>
+          <div class="form-group">
+            <label>昵称</label>
+            <input type="text" name="full_name" placeholder="可选" />
+          </div>
+          <div class="form-group">
+            <label>密码</label>
+            <input type="password" name="password" required minlength="6" placeholder="至少 6 个字符" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">注 册</button>
+        </form>
       </div>
-      <form id="login-form" class="auth-form">
-        <div class="form-group">
-          <label>用户名</label>
-          <input type="text" name="username" required minlength="3" placeholder="请输入用户名" />
-        </div>
-        <div class="form-group">
-          <label>密码</label>
-          <input type="password" name="password" required minlength="6" placeholder="请输入密码" />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">登 录</button>
-      </form>
-      <form id="register-form" class="auth-form hidden">
-        <div class="form-group">
-          <label>用户名</label>
-          <input type="text" name="username" required minlength="3" placeholder="至少 3 个字符" />
-        </div>
-        <div class="form-group">
-          <label>昵称</label>
-          <input type="text" name="full_name" placeholder="可选" />
-        </div>
-        <div class="form-group">
-          <label>密码</label>
-          <input type="password" name="password" required minlength="6" placeholder="至少 6 个字符" />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">注 册</button>
-      </form>
     </div>
   </div>
 

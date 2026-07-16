@@ -6,7 +6,8 @@ window.Dashboard = (() => {
   let roomTypeChart = null;
 
   const roomTypeLabels = { single: "单间", suite: "套房", whole: "整栋" };
-  const chartColors = ["#4f46e5", "#10b981", "#f59e0b", "#ef4444", "#3b82f6", "#8b5cf6"];
+  // 与 Refined Nature 设计系统对齐的图表配色
+  const chartColors = ["#4A7C59", "#C67A4B", "#3B8C7A", "#D4953A", "#2D4A38", "#8FA195"];
 
   async function load() {
     try {
@@ -40,12 +41,13 @@ window.Dashboard = (() => {
         datasets: [{
           label: "收益 (¥)",
           data: trend.map((t) => t.revenue),
-          borderColor: "#4f46e5",
-          backgroundColor: "rgba(79, 70, 229, 0.1)",
+          borderColor: "#4A7C59",
+          backgroundColor: "rgba(74, 124, 89, 0.12)",
           fill: true,
           tension: 0.4,
           pointRadius: 4,
-          pointBackgroundColor: "#4f46e5",
+          pointBackgroundColor: "#4A7C59",
+          pointHoverRadius: 6,
         }],
       },
       options: {
